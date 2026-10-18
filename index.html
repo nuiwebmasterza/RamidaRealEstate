@@ -596,10 +596,67 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand);b
 @keyframes rip{0%{clip-path:circle(0 at var(--x,50%) var(--y,50%));opacity:.26}100%{clip-path:circle(150% at var(--x,50%) var(--y,50%));opacity:0}}
 @media (prefers-reduced-motion:reduce){button,.btn,.cta,.ghost,.chip,.fold>summary,#pside .rlinks a,a.btn,a.cta,a.ghost{transition-duration:.01s}
 button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hover,#pside .rlinks a:hover,button:not(:disabled):active,.btn:active,.cta:active,.ghost:active{transform:none}.ripple{display:none}}
+/* ===== property image gallery with prev / next ===== */
+.gal{position:relative;margin-bottom:10px}
+.gtrack{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:12px}
+.gtrack::-webkit-scrollbar{display:none}
+.gtrack img{flex:0 0 100%;width:100%;height:250px;object-fit:cover;scroll-snap-align:start;border-radius:12px;display:block}
+.gnav{position:absolute;top:calc(50% - 21px);width:42px;height:42px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.94);color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(43,56,42,.28);cursor:pointer}
+.gprev{left:10px}.gnext{right:10px}
+.gnav.off{opacity:.35;pointer-events:none}
+.gcount{position:absolute;bottom:10px;right:12px;background:rgba(20,32,20,.68);color:#fff;font-size:13px;padding:3px 11px;border-radius:99px;pointer-events:none}
+.th2{position:relative}.th2 img{display:block}
+.imgn{position:absolute;top:10px;right:10px;background:rgba(20,32,20,.68);color:#fff;font-size:12.5px;padding:3px 10px;border-radius:99px}
+/* ===== short landscape screens (phones turned sideways): bigger, equal side cards ===== */
+@media (min-width:768px){
+html.short body.pub #pub,html.short body:not(.pub) main{max-width:640px;margin-top:14px;margin-bottom:14px}
+html.short body.pub #pside,html.short body.pub #lside,html.short body:not(.pub) nav,html.short body:not(.pub) #aside2{top:14px;width:290px}
+html.short body.pub #pside,html.short body:not(.pub) nav{left:calc(50% - 332px - 290px)}
+html.short body.pub #lside,html.short body:not(.pub) #aside2{left:calc(50% + 332px)}
+html.short body.pub .ov{width:640px;margin-left:-320px}
+html.short body.pub #pside,html.short body:not(.pub) nav{padding:16px 18px}
+html.short body.pub #pside .rname,html.short body:not(.pub) nav .nhead b{margin-top:8px}
+html.short body.pub #pside .rlinks{margin-top:10px;gap:2px}
+html.short body.pub #pside .rlinks a,html.short body:not(.pub) nav button{padding:10px 16px}
+html.short body.pub #pside .pbtn{margin-top:10px;padding-top:4px}
+html.short body:not(.pub) nav .nhead{margin-bottom:6px}
+html.short .scard{padding:16px 18px}
+html.short .scard h3{margin-bottom:8px}
+html.short .lst{padding:9px 14px}
+html.short .nt{padding:8px 0}
+}
+/* ===== clear notifications: customer confirmation + agent badges ===== */
+.isuc{display:none;text-align:center;padding:12px 4px 4px}
+.isuc .okc{width:68px;height:68px;border-radius:50%;background:var(--brand);color:#fff;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;animation:pop .5s var(--ease)}
+.isuc b{display:block;font-size:21px;color:var(--navy)}
+.isuc p{color:var(--mute);margin:8px 0 18px;line-height:1.55}
+.card.sent>*:not(#isuc){display:none!important}
+.card.sent #isuc{display:block}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+#iok:not(:empty){color:#C62828;font-weight:600}
+.newbn{align-items:center;justify-content:space-between;gap:12px;background:#FFF1EB;border:1.5px solid var(--cta);border-radius:14px;padding:12px 16px;margin-top:12px;animation:pulse 2s ease-in-out infinite}
+.newbn b{display:block;font-size:16px;color:#B5461F}
+.newbn .btn{width:auto;flex:none;padding:10px 18px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,111,61,.45)}50%{box-shadow:0 0 0 8px rgba(255,111,61,0)}}
+nav button{position:relative}
+.bdg{position:absolute;top:calc(50% - 10px);right:12px;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:#E5484D;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;pointer-events:none}
+@media (max-width:767px){.bdg{top:2px;right:6px}}
+.tag.new{background:var(--cta);color:#fff;margin-left:6px;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){.newbn,.isuc .okc{animation:none}}
+/* ===== global new-lead alert (shows on every agent tab) ===== */
+.topbn{position:fixed;left:50%;top:12px;transform:translate(-50%,-160%);z-index:8000;width:min(94%,460px);background:#FFF1EB;border:2px solid var(--cta);border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center;box-shadow:0 14px 36px rgba(43,56,42,.32);transition:transform .35s var(--ease);pointer-events:none}
+.topbn.on{transform:translate(-50%,0);pointer-events:auto}
+.topbn .bell{width:40px;height:40px;border-radius:50%;background:var(--cta);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.topbn .tx{flex:1;min-width:0}.topbn .tx b{display:block;color:#B5461F;font-size:16px}.topbn .tx span{display:block;color:var(--ink);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbn .btn{width:auto;flex:none;padding:9px 16px}
+.topbn .x{background:none;border:0;color:var(--mute);font-size:20px;padding:0 4px;line-height:1}
+/* hide hero/profile until real data arrives (no default-photo flash) */
+#hl,.hr,#pside .rpic,#pside .rname,#pside .rtag,#pside .rmeta{transition:opacity .45s ease}
+body.nr #hl,body.nr .hr,body.nr #pside .rpic,body.nr #pside .rname,body.nr #pside .rtag,body.nr #pside .rmeta{opacity:0}
 </style>
 </head>
 <body class="pub">
-<div id="splash" aria-hidden="true"><div class="sptx">CRM Agent Flow</div><div class="spln"></div><div class="spsb">ระบบจัดการลูกค้าสำหรับนายหน้าอสังหาริมทรัพย์</div></div>
+<div id="splash" aria-hidden="true"><div class="sptx" id="spn">CRM Agent Flow</div><div class="spln"></div><div class="spsb">ระบบจัดการลูกค้าสำหรับนายหน้าอสังหาริมทรัพย์</div></div>
 <div id="pub">
 <aside id="lside">
 <div class="scard"><h3>สถิติ</h3><div class="lstg" id="lstats"></div></div>
@@ -613,7 +670,7 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
 </aside>
 <div id="dintro"><div class="pubw" style="padding-bottom:0"><div class="eyebrow2">ยินดีต้อนรับ</div><h1 class="dh">ค้นหาบ้านที่ใช่ ง่ายกว่าที่คิด</h1><p class="dp">ดูแลคุณตั้งแต่เลือกทรัพย์ นัดชม สินเชื่อ จนถึงวันโอน</p></div></div>
 <div class="hero2"><div class="in">
-<div class="topbar"><span class="logo">CRM Agent Flow</span><div class="links"><a href="#lst">ทรัพย์</a><a href="#svc">บริการ</a><a href="#rev">รีวิว</a><a href="#inq">ติดต่อ</a></div><button class="cta sm" id="login">โหมด Agent</button></div>
+<div class="topbar"><span class="logo" id="bn1">CRM Agent Flow</span><div class="links"><a href="#lst">ทรัพย์</a><a href="#svc">บริการ</a><a href="#rev">รีวิว</a><a href="#inq">ติดต่อ</a></div><button class="cta sm" id="login">โหมด Agent</button></div>
 <div class="hgrid"><div id="hl"></div><div class="hr"><div class="ring"></div><img id="hpic" class="hpic" alt=""><div class="chip2" id="c1" style="left:0;top:22%"></div><div class="chip2" id="c2" style="right:0;top:46%"></div></div></div>
 </div><svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40C240 90 480 0 720 40S1200 80 1440 30V80H0Z" fill="#fff"/></svg></div>
 <div class="pubw" style="padding-top:0"><div class="find2"><input id="sq" placeholder="ค้นหาชื่อหรือทำเล"><select id="sty"><option value="">ทุกประเภท</option><option>บ้านเดี่ยว</option><option>คอนโด</option><option>ทาวน์โฮม</option><option>ที่ดิน</option><option>อาคารพาณิชย์</option></select><select id="sm"><option value="0">ทุกราคา</option><option value="3000000">ไม่เกิน 3 ล้าน</option><option value="5000000">ไม่เกิน 5 ล้าน</option><option value="10000000">ไม่เกิน 10 ล้าน</option></select></div>
@@ -625,17 +682,17 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
 <div class="tint" id="rev"><div class="pubw"><div id="prv"></div></div></div>
 <div class="navyband"><div class="pubw row" style="padding-top:0;padding-bottom:0"><div><h2>พร้อมนัดชมแล้วใช่ไหม</h2><span class="mute">ฝากข้อมูลไว้ แล้วเราจะติดต่อกลับโดยเร็ว</span></div><a class="cta" href="#inq">นัดชมบ้าน</a></div></div>
 <div class="pubw" id="inq"><div class="inqt"><h2 class="sec" style="margin-top:20px">สนใจ? ฝากข้อมูลไว้ได้เลย</h2><p class="mute inqp">กรอกข้อมูลไว้ แล้วเราจะติดต่อกลับโดยเร็ว หรือติดต่อโดยตรงได้ทางช่องทางด้านล่าง</p><div id="ict"></div></div>
-<div class="card form" style="margin:16px auto 0"><select id="ir"><option>สนใจทรัพย์</option><option>นัดชมทรัพย์</option><option>ขอสินเชื่อ</option></select><select id="ip"></select>
+<div class="card form" id="icard" style="margin:16px auto 0"><div id="isuc" class="isuc"><div class="okc"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></div><b>ส่งข้อมูลเรียบร้อยแล้ว</b><p id="isuct"></p><button type="button" class="ghost" id="iagain">ส่งข้อมูลอีกครั้ง</button></div><select id="ir"><option>สนใจทรัพย์</option><option>นัดชมทรัพย์</option><option>ขอสินเชื่อ</option></select><select id="ip"></select>
 <div class="two"><input id="iname" placeholder="ชื่อของคุณ"><input id="iph" type="tel" placeholder="เบอร์โทร"></div>
 <div id="idw" style="display:none"><label class="mute">วัน-เวลาที่สะดวกนัดชม</label><input id="idt" type="datetime-local"></div>
 <textarea id="im" rows="2" placeholder="ข้อความ (ไม่บังคับ)"></textarea>
 <label style="display:flex;gap:8px;font-size:13px;margin-bottom:10px"><input type="checkbox" id="ipd" style="width:auto;margin:4px 0 0">ฉันยินยอมให้เก็บและใช้ข้อมูลของฉัน เพื่อติดต่อกลับเรื่องทรัพย์นี้ (PDPA)</label>
 <input id="iweb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 <button class="btn" id="isend">ส่งข้อมูลถึง Agent</button><div class="mute" id="iok" style="margin-top:8px"></div></div></div>
-<div class="foot">© CRM Agent Flow นายหน้าอสังหาริมทรัพย์อิสระ</div>
+<div class="foot">© <span id="bnf">CRM Agent Flow</span> นายหน้าอสังหาริมทรัพย์อิสระ</div>
 <div class="ov" id="pdet"><div class="sheet" id="pdb"></div></div></div>
 <main>
-<div class="ahead"><span class="logo">CRM Agent Flow</span><button class="ghost" id="topub">ดูหน้าเว็บลูกค้า</button></div>
+<div class="ahead"><span class="logo" id="bn2">CRM Agent Flow</span><button class="ghost" id="topub">ดูหน้าเว็บลูกค้า</button></div>
 <section id="v0" class="view on">
   <h1>ทรัพย์ของฉัน</h1>
   <details class="fold"><summary>+ เพิ่มทรัพย์ใหม่</summary><div class="card form">
@@ -660,6 +717,7 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
 
 <section id="v2" class="view">
   <h1>ลูกค้า</h1><div id="due"></div>
+  <div id="newbn" class="newbn" style="display:none"><div><b id="newbt"></b><div class="mute" id="newbs"></div></div><button type="button" class="btn" id="newack">รับทราบ</button></div>
   <details class="fold" style="margin-top:14px"><summary>+ เพิ่มลูกค้าใหม่</summary><div class="card form">
     <div class="two"><input id="ln" placeholder="ชื่อลูกค้า"><input id="lp" type="tel" placeholder="เบอร์โทร"></div>
     <div class="two"><input id="lb" type="number" step="0.1" inputmode="decimal" placeholder="งบ (ล้านบาท)"><select id="lt"><option>บ้านเดี่ยว</option><option>คอนโด</option><option>ทาวน์โฮม</option><option>ที่ดิน</option><option>อาคารพาณิชย์</option></select></div>
@@ -689,7 +747,7 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
     <div class="mute" id="mpm" style="margin-bottom:6px">อัปโหลดรูปพื้นหลังเรียบ ระบบจะตัดพื้นหลังและวางบนหน้าแรกให้อัตโนมัติ</div>
     <label class="mute">ความไวการตัดพื้นหลัง</label><input id="mtol" type="range" min="12" max="90" value="38" style="padding:0">
     <button class="ghost" id="mpr" style="margin-bottom:10px">กลับเป็นรูปเริ่มต้น</button>
-    <input id="mn" placeholder="ชื่อ-นามสกุล"><input id="mg" placeholder="สโลแกน เช่น ดูแลคุณตั้งแต่เลือกบ้านถึงโอน">
+    <label class="mute">ชื่อแอป / ชื่อแบรนด์ (แสดงบนหน้าเว็บ หัวเว็บ และแท็บเบราว์เซอร์)</label><input id="mapp" placeholder="ชื่อแอป เช่น CRM Agent Flow"><input id="mn" placeholder="ชื่อ-นามสกุล"><input id="mg" placeholder="สโลแกน เช่น ดูแลคุณตั้งแต่เลือกบ้านถึงโอน">
     <div class="two"><input id="mc" placeholder="เลขใบอนุญาต/สังกัด"><input id="mx" placeholder="ประสบการณ์ เช่น 5 ปี"></div>
     <div class="two"><input id="mph" type="tel" placeholder="เบอร์โทร"><input id="mli" placeholder="LINE ID"></div>
     <div class="two"><input id="mrv" placeholder="เพิ่มรีวิวลูกค้า"><button class="ghost" id="mradd" style="margin-bottom:8px">เพิ่มรีวิว</button></div>
@@ -701,7 +759,7 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
   <div class="card form">
    <label class="mute">อีเมลที่รับแจ้งเตือนลูกค้าใหม่</label><input id="nem" type="email" placeholder="อีเมล">
    <label class="mute">ลิงก์เว็บของคุณ (ใส่ในอีเมลแจ้งเตือน เช่น https://ชื่อ.vercel.app)</label><input id="cus" type="url" placeholder="https://...">
-   <button class="btn" id="sset">บันทึกการตั้งค่า</button><button class="ghost" id="logout2" style="margin-top:10px;width:100%;padding:11px">ออกจากระบบ</button><div class="mute" id="adm" style="margin-top:8px"></div></div></div>
+   <button class="btn" id="sset">บันทึกการตั้งค่า</button><button class="ghost" id="smail" type="button" style="margin-top:10px;width:100%;padding:11px">ส่งอีเมลทดสอบ</button><div class="mute" id="mres" style="margin-top:8px"></div><button class="ghost" id="logout2" style="margin-top:10px;width:100%;padding:11px">ออกจากระบบ</button><div class="mute" id="adm" style="margin-top:8px"></div><div class="mute" id="mst" style="margin-top:6px"></div></div></div>
   <h2>สำรองข้อมูล</h2>
   <div class="card form"><button class="btn" id="bk">ดาวน์โหลดไฟล์สำรอง</button><label class="mute" style="display:block;margin-top:12px">กู้คืนจากไฟล์สำรอง</label><input id="rs" type="file" accept=".json"><div class="mute" id="bkm"></div></div>
 </section>
@@ -713,6 +771,7 @@ button:not(:disabled):hover,.btn:hover,.cta:hover,.ghost:hover,.fold>summary:hov
 <aside id="aside2"><div class="scard"><h3>ภาพรวมวันนี้</h3><div class="lstg" id="astats"></div></div><div class="scard"><h3>แจ้งเตือน</h3><div id="anotif"></div></div></aside>
 <div id="lgn" class="lgn"><div class="lgc"><h2>เข้าสู่ระบบเจ้าของเว็บ</h2><p class="mute" style="margin:0">ใช้บัญชี Google ของเจ้าของเว็บเท่านั้น</p><div id="gbtn"></div><div id="lgm" class="mute"></div><button class="ghost" id="lgx" style="margin-top:12px">ปิด</button></div></div>
 <div id="svst" class="svst"></div>
+<div id="topbn" class="topbn" role="alert" aria-live="assertive"><div class="bell"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><div class="tx"><b id="tbt"></b><span id="tbs"></span></div><button type="button" class="btn" id="tbgo">ดูเลย</button><button type="button" class="x" id="tbx" aria-label="ปิด">×</button></div>
 <div id="rpt" aria-hidden="true"></div>
 <script>
 (function(){try{var l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai+Looped:wght@400;600;700&family=Mitr:wght@500;600&display=swap";document.head.appendChild(l)}catch(e){}})();
@@ -730,6 +789,8 @@ function iso(d){var x=new Date(d.getTime()-d.getTimezoneOffset()*6e4);return x.t
 function plus(n){var d=new Date();d.setDate(d.getDate()+n);return iso(d)}
 var TODAY=iso(new Date());
 var CFG=window.APP_CONFIG||{},API=CFG.API_URL||"",LIVE=!!API,MODE=LIVE?"public":"demo",REV=0,TOKEN=null;
+var READY=!LIVE;if(LIVE)document.body.classList.add("nr");
+try{var cb0=localStorage.getItem("cf_brand");if(cb0){["bn1","bn2","bnf","spn"].forEach(function(i){var e=document.getElementById(i);if(e)e.textContent=cb0});document.title=cb0+" - เครื่องมือส่วนตัวสำหรับนายหน้าอิสระ"}}catch(e){}
 try{TOKEN=sessionStorage.getItem("cf_tok")}catch(e){}
 function jwt(t){try{return JSON.parse(decodeURIComponent(escape(atob(t.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")))))}catch(e){return null}}
 function tokOk(){var p=TOKEN&&jwt(TOKEN);return !!(p&&p.exp*1000>Date.now()+60000)}
@@ -755,7 +816,7 @@ function matches(l){return D.p.filter(function(p){return avail(p)&&p.t===l.t&&p.
 function pm(p){var n=D.l.filter(function(l){return l.s<4&&l.t===p.t&&p.pr<=l.b*1e6*1.1}).length;return n?'ตรงกับลูกค้า '+n+' ราย - โทรต่อได้ทันที':'ยังไม่มีลูกค้าที่ตรง'}
 function renderP(){
  $("plist").innerHTML=D.p.length?D.p.map(function(p){
-  return '<div class="card">'+(p.img?'<img alt="" src="'+p.img+'" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:10px">':'')+'<div class="row"><b>'+esc(p.n)+'</b><span class="tag">'+esc(p.t)+', '+esc(p.st||"ขาย")+'</span></div>'
+  return '<div class="card">'+(p.img?'<div class="th2"><img alt="" src="'+p.img+'" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:10px">'+imgBadge(p)+'</div>':'')+'<div class="row"><b>'+esc(p.n)+'</b><span class="tag">'+esc(p.t)+', '+esc(p.st||"ขาย")+'</span></div>'
   +'<div style="font-size:20px;font-weight:600;margin:4px 0">฿ '+fmt(p.pr)+'</div>'
   +'<div class="mute">'+(p.b?p.b+' นอน, ':'')+(p.a?p.a+' น้ำ':'')+(p.m?', '+esc(p.m):'')+'</div>'
   +'<div class="mute" style="margin-top:4px">'+pm(p)+'</div><div class="acts"><button class="ghost" data-edp="'+p.id+'">แก้ไข</button>'+(safeUrl(p.link)?'<a class="ghost" style="text-decoration:none" target="_blank" rel="noopener" href="'+esc(safeUrl(p.link))+'">ลิงก์</a>':'')+(safeUrl(p.map)?'<a class="ghost" style="text-decoration:none" target="_blank" rel="noopener" href="'+esc(safeUrl(p.map))+'">แผนที่</a>':'')+'<button class="ghost" data-gen="'+p.id+'">สร้างประกาศ</button><button class="ghost" data-delp="'+p.id+'">ลบ</button></div></div>'}).join("")
@@ -769,7 +830,7 @@ function renderL(){
  $("llist").innerHTML=a.length?a.map(function(l){
   var late=l.s<4&&l.d<TODAY,today=l.s<4&&l.d===TODAY,m=matches(l);
   var dl=l.s===4?'':'<span class="tag'+(late||today?' hot':'')+'">'+(late?'เลยกำหนด ':today?'วันนี้ ':'ติดตาม ')+fmtD(l.d)+'</span>';
-  return '<div class="card"><div class="row"><b>'+esc(l.n)+'</b><span class="tag'+(l.s===4?' done':l.s>=2?' hot':'')+'">'+ST[l.s]+'</span></div>'
+  return '<div class="card"><div class="row"><b>'+esc(l.n)+(unseen(l)?' <span class="tag new">ใหม่</span>':'')+'</b><span class="tag'+(l.s===4?' done':l.s>=2?' hot':'')+'">'+ST[l.s]+'</span></div>'
   +'<div class="mute">'+(l.b?'งบ '+l.b+' ล้าน, ':'')+esc(l.t)+(l.src?', จาก '+esc(l.src):'')+(l.req?', '+esc(l.req)+(l.prop?' '+esc(l.prop):''):'')+(m?', ตรงกับทรัพย์ '+m+' รายการ':'')+'</div>'+(l.msg?'<div style="margin-top:6px">“'+esc(l.msg)+'”</div>':'')+'<div style="margin-top:6px">'+dl+(l.appt?' <span class="tag hot">นัดชม '+fmtDT(l.appt)+'</span>':'')+'</div>'
   +'<div class="acts">'+(l.ph?'<a class="ghost" style="text-decoration:none;color:inherit" href="tel:'+esc(l.ph)+'">โทร</a>':'')
   +(l.s<4?'<button class="ghost" data-adv="'+l.id+'">ย้ายไป '+ST[l.s+1]+'</button><button class="ghost" data-snz="'+l.id+'">เลื่อน +3 วัน</button>':'')
@@ -813,7 +874,14 @@ function gen(id){
 var openN=null,CM=new Date();CM.setDate(1);
 function armed(t){if(t.dataset.arm==="1")return true;t.dataset.arm="1";var tx=t.textContent;t.textContent="ยืนยันลบ?";t.style.color="#C62828";t.style.borderColor="#C62828";setTimeout(function(){if(t.isConnected){t.dataset.arm="";t.textContent=tx;t.removeAttribute("style")}},3000);return false}
 function notesHtml(l){return '<div style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px">'+(l.notes||[]).slice().reverse().map(function(n){return '<div style="margin-bottom:8px"><div class="mute">'+fmtDT(n.t)+'</div>'+esc(n.x)+'</div>'}).join("")+'<input id="nin" placeholder="บันทึกการคุยครั้งนี้"><button class="btn" data-addn="'+l.id+'">เพิ่มโน้ต</button></div>'}
-function gal(p){var a=p.imgs&&p.imgs.length?p.imgs:(p.img?[p.img]:[]);return a.length?'<div style="display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin-bottom:10px">'+a.map(function(u){return '<img alt="" src="'+u+'" style="flex:0 0 100%;max-height:260px;object-fit:cover;border-radius:10px;scroll-snap-align:start">'}).join("")+'</div>':'<div class="ph">ไม่มีรูป</div>'}
+function imgBadge(p){return p.imgs&&p.imgs.length>1?'<span class="imgn">'+p.imgs.length+' รูป</span>':''}
+function gal(p){var a=p.imgs&&p.imgs.length?p.imgs:(p.img?[p.img]:[]);if(!a.length)return '<div class="ph">ไม่มีรูป</div>';
+ var many=a.length>1,ic=function(d){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="'+d+'"/></svg>'};
+ return '<div class="gal"><div class="gtrack">'+a.map(function(u,i){return '<img alt="รูปที่ '+(i+1)+'" src="'+u+'">'}).join("")+'</div>'
+  +(many?'<button type="button" class="gnav gprev off" data-gdir="-1" aria-label="รูปก่อนหน้า">'+ic("15 6 9 12 15 18")+'</button><button type="button" class="gnav gnext" data-gdir="1" aria-label="รูปถัดไป">'+ic("9 6 15 12 9 18")+'</button><div class="gcount">1 / '+a.length+'</div>':'')+'</div>'}
+document.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest(".gnav");if(!g)return;var tr=g.parentNode.querySelector(".gtrack"),d=+g.dataset.gdir;tr.scrollBy({left:d*(tr.clientWidth+8),behavior:"smooth"})});
+document.addEventListener("scroll",function(e){var t=e.target;if(!t||!t.classList||!t.classList.contains("gtrack"))return;var g=t.parentNode,n=t.children.length,i=Math.min(n-1,Math.max(0,Math.round(t.scrollLeft/(t.clientWidth+8))));
+ g.querySelector(".gcount").textContent=(i+1)+" / "+n;g.querySelector(".gprev").classList.toggle("off",i<=0);g.querySelector(".gnext").classList.toggle("off",i>=n-1)},true);
 document.addEventListener("click",function(e){var t=e.target,d=t.dataset;
  if(d.v!==undefined)show(d.v);
  if(d.gen){$("gp").value=d.gen;show(1);gen(d.gen)}
@@ -844,19 +912,22 @@ $("ladd").onclick=function(){var n=$("ln").value.trim();if(!n){$("ln").focus();r
  if(old)D.l[D.l.indexOf(old)]=o;else D.l.unshift(o);EL=null;$("ladd").textContent="บันทึกลูกค้า";
  ["ln","lp","lb","ld","lda"].forEach(function(i){$(i).value=""});save();all()};
 $("goal").oninput=$("rate").oninput=renderD;
-var MF={mn:"n",mg:"g",mc:"c",mx:"x",mph:"ph",mli:"li"};
-Object.keys(MF).forEach(function(id){$(id).value=D.me[MF[id]]||"";$(id).oninput=function(){D.me[MF[id]]=$(id).value;save();renderM()}});
+var MF={mapp:"app",mn:"n",mg:"g",mc:"c",mx:"x",mph:"ph",mli:"li"};
+function fillMe(){Object.keys(MF).forEach(function(id){$(id).value=D.me[MF[id]]||""});$("mtol").value=D.me.tol||38}
+function brand(){return (D&&D.me&&D.me.app&&D.me.app.trim())||"CRM Agent Flow"}
+function renderBrand(){if(!READY)return;var b=brand();["bn1","bn2","bnf","spn"].forEach(function(i){var e=$(i);if(e)e.textContent=b});BASE_TITLE=b+" - เครื่องมือส่วนตัวสำหรับนายหน้าอิสระ";try{localStorage.setItem("cf_brand",b)}catch(e){}}
+Object.keys(MF).forEach(function(id){$(id).value=D.me[MF[id]]||"";$(id).oninput=function(){D.me[MF[id]]=$(id).value;save();renderM();renderBrand();renderBadge()}});
 $("mradd").onclick=function(){var v=$("mrv").value.trim();if(v){D.me.rv.push(v);$("mrv").value="";save();renderM()}};
-function pcard(p){return '<div class="card" data-pv="'+p.id+'" style="cursor:pointer">'+(p.img?'<img alt="" src="'+p.img+'" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:10px">':'<div class="ph">ไม่มีรูป</div>')+'<div class="row"><b>'+esc(p.n)+'</b><span class="tag">'+esc(p.t)+', '+esc(p.st||"ขาย")+'</span></div><div style="font-size:20px;font-weight:600;margin:4px 0">฿ '+fmt(p.pr)+'</div><div class="mute">'+(p.b?p.b+' นอน, ':'')+(p.a?p.a+' น้ำ':'')+'</div></div>'}
+function pcard(p){return '<div class="card" data-pv="'+p.id+'" style="cursor:pointer">'+(p.img?'<div class="th2"><img alt="" src="'+p.img+'" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:10px">'+imgBadge(p)+'</div>':'<div class="ph">ไม่มีรูป</div>')+'<div class="row"><b>'+esc(p.n)+'</b><span class="tag">'+esc(p.t)+', '+esc(p.st||"ขาย")+'</span></div><div style="font-size:20px;font-weight:600;margin:4px 0">฿ '+fmt(p.pr)+'</div><div class="mute">'+(p.b?p.b+' นอน, ':'')+(p.a?p.a+' น้ำ':'')+'</div></div>'}
 function renderPub(){var m=D.me,n=m.n||"ชื่อของคุณ";
  var won=D.l.filter(function(l){return l.s===4}).length;
  $("hl").innerHTML='<div class="eyebrow">นายหน้าอสังหาริมทรัพย์อิสระ</div><h1 class="hname">'+esc(n)+'</h1><p style="margin:0 0 6px;opacity:.92;max-width:22em">'+esc(m.g||"ค้นหาบ้านที่ใช่ ง่ายกว่าที่คิด")+'</p><div style="font-size:13px;opacity:.8;margin-bottom:18px">'+esc([m.c,m.x].filter(Boolean).join(", "))+'</div><div class="acts" style="margin:0"><a class="cta" href="#inq">นัดชมทรัพย์</a>'+(m.ph?'<a class="cta ol" href="tel:'+esc(m.ph)+'">โทร</a>':'')+(m.li?'<a class="cta ol" href="https://line.me/ti/p/~'+encodeURIComponent(m.li)+'">LINE</a>':'')+'</div>';
- $("rimg").src=m.cut||m.photo||CUT;$("rname").textContent=n;$("rtag").textContent=m.g||"นายหน้าอสังหาริมทรัพย์อิสระ";$("rmeta").textContent=[m.c,m.x].filter(Boolean).join(", ");
+ if(READY)$("rimg").src=m.cut||m.photo||CUT;$("rname").textContent=n;$("rtag").textContent=m.g||"นายหน้าอสังหาริมทรัพย์อิสระ";$("rmeta").textContent=[m.c,m.x].filter(Boolean).join(", ");
  $("rbtn").innerHTML=(m.ph?'<a class="cta ol" href="tel:'+esc(m.ph)+'">โทร '+esc(m.ph)+'</a>':'')+(m.li?'<a class="cta ol" href="https://line.me/ti/p/~'+encodeURIComponent(m.li)+'">LINE '+esc(m.li)+'</a>':'')+'<a class="cta" href="#inq">นัดชมทรัพย์</a>';
  $("ict").innerHTML=(m.ph?'<div class="ctr"><span class="mute">โทร</span><b>'+esc(m.ph)+'</b></div>':'')+(m.li?'<div class="ctr"><span class="mute">LINE</span><b>'+esc(m.li)+'</b></div>':'');
  var nl=D.p.filter(function(p){return p.st!=="ปิดการขาย"}).slice(0,30);
  $("lnotif").innerHTML=nl.length?nl.map(function(p){var st=p.st||"ขาย",lab=st==="จองแล้ว"?"จองแล้ว":st==="เช่า"?"ว่างให้เช่า":"ทรัพย์ใหม่";return '<div class="nt" data-pv="'+p.id+'"><span class="tag'+(st==="จองแล้ว"?' hot':'')+'">'+lab+'</span><b>'+esc(p.n)+'</b><span class="mute">฿ '+fmt(p.pr)+'</span></div>'}).join(""):'<div class="mute">ยังไม่มีการแจ้งเตือน</div>';
- $("hpic").src=m.cut||m.photo||CUT;$("hpic").className="hpic"+(m.photo&&!m.cut?" arch":"");
+ if(READY){$("hpic").src=m.cut||m.photo||CUT;$("hpic").className="hpic"+(m.photo&&!m.cut?" arch":"")}
  $("c1").style.display=m.x?"":"none";$("c1").innerHTML='<b>'+esc(m.x||"")+'</b>ประสบการณ์';$("c2").innerHTML='<b>'+won+' ดีล</b>ปิดการขายแล้ว';
  var q=$("sq").value.trim().toLowerCase(),t=$("sty").value,mx=+$("sm").value;
  var a=D.p.filter(function(p){return p.st!=="ปิดการขาย"&&(!t||p.t===t)&&(!mx||p.pr<=mx)&&(!q||(p.n+" "+p.m).toLowerCase().indexOf(q)>=0)});
@@ -872,11 +943,11 @@ $("sq").oninput=$("sty").onchange=$("sm").onchange=renderPub;
 $("isend").onclick=function(){var n=$("iname").value.trim(),ph=$("iph").value.trim();if(!n||!ph){(n?$("iph"):$("iname")).focus();return}
  if(!$("ipd").checked){$("iok").textContent="กรุณาติ๊กยินยอมให้เก็บข้อมูลก่อนส่ง";return}
  var p=D.p.find(function(x){return x.id==$("ip").value});
- if(MODE==="public"){var ap=$("ir").value==="นัดชมทรัพย์"?$("idt").value:"";$("isend").disabled=true;$("iok").textContent="กำลังส่ง...";
-  api("submitInquiry",{data:{n:n,ph:ph,req:$("ir").value,prop:p?p.n:"",msg:$("im").value.trim(),appt:ap,pdpa:true,website:$("iweb").value}}).then(function(){["iname","iph","im","idt"].forEach(function(i){$(i).value=""});$("ipd").checked=false;$("isend").disabled=false;$("iok").textContent="ส่งข้อมูลแล้ว Agent จะติดต่อกลับโดยเร็ว"})
-  .catch(function(er){$("isend").disabled=false;$("iok").textContent=(er&&er.message)?er.message:"ส่งไม่สำเร็จ กรุณาลองใหม่"});return}
+ if(MODE==="public"){var ap=$("ir").value==="นัดชมทรัพย์"?$("idt").value:"";$("isend").disabled=true;$("iok").textContent="";$("isend").textContent="กำลังส่ง...";
+  api("submitInquiry",{data:{n:n,ph:ph,req:$("ir").value,prop:p?p.n:"",msg:$("im").value.trim(),appt:ap,pdpa:true,website:$("iweb").value}}).then(function(){["iname","iph","im","idt"].forEach(function(i){$(i).value=""});$("ipd").checked=false;$("isend").disabled=false;$("isend").textContent="ส่งข้อมูลถึง Agent";inqDone(n,ph)})
+  .catch(function(er){$("isend").disabled=false;$("isend").textContent="ส่งข้อมูลถึง Agent";$("iok").textContent=(er&&er.message)?er.message:"ส่งไม่สำเร็จ กรุณาลองใหม่"});return}
  D.l.unshift({id:Date.now(),n:n,ph:ph,b:0,t:p?p.t:"ไม่ระบุ",s:0,d:TODAY,src:"เว็บไซต์",req:$("ir").value,prop:p?p.n:"",msg:$("im").value.trim(),appt:$("ir").value==="นัดชมทรัพย์"?$("idt").value:"",c:TODAY,pdpa:true});
- ["iname","iph","im","idt"].forEach(function(i){$(i).value=""});$("ipd").checked=false;save();all();$("iok").textContent="ส่งข้อมูลแล้ว Agent จะติดต่อกลับโดยเร็ว"};
+ ["iname","iph","im","idt"].forEach(function(i){$(i).value=""});$("ipd").checked=false;save();all();inqDone(n,ph)};
 $("login").onclick=function(){document.body.classList.remove("pub");show(2);fit();requestAnimationFrame(fitMenu)};
 $("login2").onclick=$("login").onclick;
 $("topub").onclick=function(){document.body.classList.add("pub");renderPub();fit();requestAnimationFrame(fitMenu);window.scrollTo(0,0)};
@@ -968,17 +1039,20 @@ $("mpf").onchange=function(){var f=this.files[0];if(!f)return;var r=new FileRead
 $("mtol").value=D.me.tol||38;
 $("mtol").onchange=function(){if(D.me.photo)applyPhoto(D.me.photo,+this.value)};
 $("mpr").onclick=function(){D.me.photo=null;D.me.cut=null;save();$("mpm").textContent="กลับเป็นรูปเริ่มต้นแล้ว";all()};
-var _lw=0,_vm=0,_zs=null,_vh=null,_mh=null,_rq=0;
+var _sh=null,_lw=0,_vm=0,_zs=null,_vh=null,_mh=null,_rq=0;
 function stableH(){var w=window.innerWidth,h=window.innerHeight;if(w!==_lw||Math.abs(h-_vm)>140){_lw=w;_vm=h}else if(h<_vm){_vm=h}return _vm}
 function fit(){var w=window.innerWidth,z=(w>=768&&w<1260)?w/1260:1,zs=z===1?"":String(z),rs=document.documentElement.style,vh=Math.round(stableH()/z)+"px";
- if(_vh!==vh){_vh=vh;rs.setProperty("--vh",vh)}if(_zs!==zs){_zs=zs;document.body.style.zoom=zs}if(rs.zoom)rs.zoom=""}
-function fitMenu(){var rs=document.documentElement.style,vh=parseFloat(_vh)||window.innerHeight,mn=null;
+ if(_vh!==vh){_vh=vh;rs.setProperty("--vh",vh)}if(_zs!==zs){_zs=zs;document.body.style.zoom=zs}if(rs.zoom)rs.zoom="";var sh=(_vm<=620&&w>=768);if(_sh!==sh){_sh=sh;document.documentElement.classList.toggle("short",sh)}}
+function fitMenu(){var rs=document.documentElement.style,vh=parseFloat(_vh)||window.innerHeight,pub=document.body.classList.contains("pub"),mk=1,mh=null;
  ["pside","nav"].forEach(function(id){var e=id==="nav"?document.querySelector("nav"):document.getElementById(id);if(!e||window.innerWidth<768)return;
   if(getComputedStyle(e).display==="none")return;
-  var h=e.offsetHeight,av=vh-56,k=h>av?Math.max(.7,av/h):1,t=k<1?"scale("+k.toFixed(3)+")":"";
+  var h=e.offsetHeight,av=vh-(document.documentElement.classList.contains("short")?28:56),k=h>av?Math.max(.7,av/h):1,t=k<1?"scale("+k.toFixed(3)+")":"";
   if(e._t!==t){e._t=t;e.style.transformOrigin="top center";e.style.transform=t}
-  if(document.body.classList.contains("pub")?id==="pside":id==="nav")mn=Math.round(h*k)});
- if(mn!==null&&_mh!==mn){_mh=mn;rs.setProperty("--menuH",mn+"px")}}
+  if(pub?id==="pside":id==="nav"){mk=k;mh=h}});
+ ["lside","aside2"].forEach(function(id){var e=document.getElementById(id);if(!e)return;
+  var on=window.innerWidth>=768&&getComputedStyle(e).display!=="none",t=on&&mk<1?"scale("+mk.toFixed(3)+")":"";
+  if(e._t!==t){e._t=t;e.style.transformOrigin="top center";e.style.transform=t}});
+ if(mh!==null&&_mh!==mh){_mh=mh;rs.setProperty("--menuH",mh+"px")}}
 window.addEventListener("resize",function(){if(_rq)return;_rq=requestAnimationFrame(function(){_rq=0;fit();fitMenu()})});fit();requestAnimationFrame(fitMenu);window.addEventListener("load",fitMenu);
 (function(){var sp=document.getElementById("splash");if(!sp)return;
  function start(){if(sp.classList.contains("go"))return;sp.classList.add("go");setTimeout(function(){if(sp.parentNode)sp.remove()},4300)}
@@ -987,13 +1061,13 @@ window.addEventListener("resize",function(){if(_rq)return;_rq=requestAnimationFr
   document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&sp.parentNode){io.disconnect();io.observe(sp)}})}
  else start()})();
 function renderAside(){var m=D.me;
- $("aimg").src=m.cut||m.photo||CUT;$("anm").textContent=m.n||"ชื่อของคุณ";$("atg").textContent=m.g||"นายหน้าอสังหาริมทรัพย์อิสระ";
+ if(READY)$("aimg").src=m.cut||m.photo||CUT;$("anm").textContent=m.n||"ชื่อของคุณ";$("atg").textContent=m.g||"นายหน้าอสังหาริมทรัพย์อิสระ";
  var open=D.l.filter(function(l){return l.s<4}),due=open.filter(function(l){return l.d<=TODAY}),ap=open.filter(function(l){return l.appt&&l.appt.slice(0,10)>=TODAY}).sort(function(x,y){return x.appt.localeCompare(y.appt)}),won=D.l.filter(function(l){return l.s===4}).length;
  $("astats").innerHTML=[["ต้องติดตามวันนี้",due.length],["นัดหมายที่จะถึง",ap.length],["ลูกค้าทั้งหมด",D.l.length],["ปิดการขายแล้ว",won]].map(function(k){return '<div class="lst"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>'}).join("");
- var it=[];due.forEach(function(l){it.push({t:l.d<TODAY?"เลยกำหนด":"วันนี้",h:1,n:l.n,s:"ติดตาม "+fmtD(l.d)})});
+ var it=[];D.l.filter(unseen).forEach(function(l){it.push({t:"ลูกค้าใหม่",h:1,n:l.n,s:(l.req||"ฝากข้อมูล")+(l.prop?" "+l.prop:"")})});due.forEach(function(l){it.push({t:l.d<TODAY?"เลยกำหนด":"วันนี้",h:1,n:l.n,s:"ติดตาม "+fmtD(l.d)})});
  ap.forEach(function(l){it.push({t:"นัดชม",h:0,n:l.n,s:fmtDT(l.appt)})});
  $("anotif").innerHTML=it.length?it.slice(0,40).map(function(i){return '<div class="nt" data-v="2"><span class="tag'+(i.h?' hot':'')+'">'+i.t+'</span><b>'+esc(i.n)+'</b><span class="mute">'+i.s+'</span></div>'}).join(""):'<div class="mute">ไม่มีรายการที่ต้องทำ</div>'}
-var _all=all;all=function(){_all();renderAside();requestAnimationFrame(fitMenu)};
+var _all=all;all=function(){_all();renderAside();renderBrand();renderBadge();requestAnimationFrame(fitMenu)};
 $("aside2").addEventListener("click",function(e){var c=e.target.closest("[data-v]");if(c)show(c.dataset.v)});
 function spy(){var ids=["pub","svc","lst","rev","inq"],cur="pub";ids.forEach(function(id){var e=document.getElementById(id);if(e&&e.offsetParent!==null&&e.getBoundingClientRect().top<=170)cur=id});document.querySelectorAll("#pside .rlinks a").forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+cur)})}
 var _sq=0;window.addEventListener("scroll",function(){if(_sq)return;_sq=requestAnimationFrame(function(){_sq=0;spy()})},{passive:true});window.addEventListener("resize",spy);spy();
@@ -1010,14 +1084,17 @@ function cfOnCred(r){TOKEN=r&&r.credential;try{sessionStorage.setItem("cf_tok",T
  cfEnter()}
 function expired(){TOKEN=null;try{sessionStorage.removeItem("cf_tok")}catch(e){}setSt("หมดเวลาเข้าสู่ระบบ");cfShowLogin("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง ข้อมูลที่แก้ไว้ยังอยู่และจะบันทึกให้หลังเข้าสู่ระบบ",false)}
 function cfEnter(){cfMsg("กำลังเข้าสู่ระบบ...");
- api("consoleData",{},true).then(function(d){D=d;D.p=D.p||[];D.l=D.l||[];D.me=D.me||{n:"",g:"",c:"",x:"",ph:"",li:"",rv:[]};D.me.rv=D.me.rv||[];REV=D._rev||0;MODE="console";
+ api("consoleData",{},true).then(function(d){D=d;D.p=D.p||[];D.l=D.l||[];D.me=D.me||{n:"",g:"",c:"",x:"",ph:"",li:"",rv:[]};D.me.rv=D.me.rv||[];REV=D._rev||0;MODE="console";READY=true;document.body.classList.remove("nr");fillMe();
   var p=jwt(TOKEN)||{};$("aem").textContent=p.email||"";$("logout").style.display="inline-block";
   $("lgn").classList.remove("on");document.body.classList.remove("pub");show(2);fit();all();cfStart()})
  .catch(function(e){if(e&&e.code==="AUTH"){TOKEN=null;try{sessionStorage.removeItem("cf_tok")}catch(x){}cfShowLogin("บัญชีนี้ไม่ใช่เจ้าของเว็บ หรือหมดอายุ กรุณาเข้าสู่ระบบด้วยบัญชี Google ของเจ้าของ",true)}else{cfShowLogin((e&&e.message)||"เข้าสู่ระบบไม่สำเร็จ",true)}})}
 function cfStart(){if(timersOn)return;timersOn=true;
- setInterval(function(){if(MODE!=="console"||saving||dirty||!tokOk())return;api("pullNew",{},true).then(function(r){if(r&&r.leads&&r.leads.length){r.leads.forEach(function(l){D.l.unshift(l)});REV=r.rev;all();setSt("มีลูกค้าใหม่ "+r.leads.length+" ราย")}}).catch(function(e){if(e&&e.code==="AUTH")expired()})},60000);
+ setInterval(function(){if(MODE!=="console"||saving||dirty||!tokOk())return;api("pullNew",{},true).then(function(r){if(r&&r.leads&&r.leads.length){r.leads.forEach(function(l){D.l.unshift(l)});REV=r.rev;all();alertNew(r.leads)}}).catch(function(e){if(e&&e.code==="AUTH")expired()})},30000);
+ try{if(window.Notification&&Notification.permission==="default")Notification.requestPermission()}catch(e){}
+ var u0=D.l.filter(unseen);if(u0.length)setTimeout(function(){alertNew(u0)},600);
  $("adminbox").style.display="block";
- api("getSettings",{},true).then(function(r){$("nem").value=r.notifyEmail||"";$("cus").value=r.siteUrl||""}).catch(function(){});
+ api("getSettings",{},true).then(function(r){$("nem").value=r.notifyEmail||"";$("cus").value=r.siteUrl||"";var bad=/^(ส่งไม่สำเร็จ|ไม่ได้ส่ง)/.test(r.lastMail||"");$("mst").textContent=!r.notifyEmail?"ยังไม่ได้ตั้งอีเมลรับแจ้งเตือน (ระบบจะส่งไปที่อีเมลเจ้าของเว็บแทน) กรอกอีเมลแล้วกดบันทึกการตั้งค่า":(r.lastMail?("อีเมลแจ้งเตือนล่าสุด: "+r.lastMail):"ยังไม่มีลูกค้าส่งข้อมูลเข้ามา");$("mst").style.color=bad?"#C62828":"";if(bad)setTimeout(function(){setSt("อีเมลแจ้งเตือนยังส่งไม่ได้ ดูที่โปรไฟล์ > การตั้งค่าระบบ")},1500)}).catch(function(){});
+ $("smail").onclick=function(){var m=$("mres");m.style.color="";m.textContent="กำลังส่งอีเมลทดสอบ...";api("testMail",{},true).then(function(r){m.style.color="#2E7D32";m.textContent="ส่งอีเมลทดสอบไปที่ "+r.to+" แล้ว กรุณาตรวจกล่องจดหมายและโฟลเดอร์สแปม"+(r.quota!=null?" (โควตาส่งวันนี้เหลือ "+r.quota+" ฉบับ)":"")}).catch(function(e){if(e&&e.code==="AUTH"){expired();return}m.style.color="#C62828";m.textContent=(e&&e.message)||"ส่งไม่สำเร็จ"})};
  $("sset").onclick=function(){$("adm").textContent="กำลังบันทึก...";api("saveSettings",{data:{notifyEmail:$("nem").value.trim(),siteUrl:$("cus").value.trim()}},true).then(function(){$("adm").textContent="บันทึกการตั้งค่าแล้ว"}).catch(function(e){if(e&&e.code==="AUTH"){expired();return}$("adm").textContent=(e&&e.message)||"บันทึกไม่สำเร็จ"})}}
 function cfLogout(){TOKEN=null;try{sessionStorage.removeItem("cf_tok")}catch(e){}if(window.google&&google.accounts&&google.accounts.id)google.accounts.id.disableAutoSelect();location.reload()}
 if(LIVE){
@@ -1026,7 +1103,7 @@ if(LIVE){
  $("login").onclick=cfLoginClick;$("login2").onclick=cfLoginClick;
  $("lgx").onclick=function(){$("lgn").classList.remove("on")};
  $("logout").onclick=cfLogout;$("logout2").onclick=cfLogout;
- fetch(API+"?action=publicData").then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error);if(MODE==="public"){D=j.data;D.p=D.p||[];D.l=D.l||[];D.me=D.me||{n:"",g:"",c:"",x:"",ph:"",li:"",rv:[]};D.me.rv=D.me.rv||[];all()}}).catch(function(){setSt("โหลดข้อมูลไม่สำเร็จ")});
+ fetch(API+"?action=publicData").then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error);READY=true;document.body.classList.remove("nr");if(MODE==="public"){D=j.data;D.p=D.p||[];D.l=D.l||[];D.me=D.me||{n:"",g:"",c:"",x:"",ph:"",li:"",rv:[]};D.me.rv=D.me.rv||[];all()}}).catch(function(){READY=true;document.body.classList.remove("nr");if(MODE==="public")all();setSt("โหลดข้อมูลไม่สำเร็จ")});
 }
 (function(){var SEL='button,.btn,.cta,.ghost,.chip,.fold>summary,#pside .rlinks a,a.btn,a.cta,a.ghost';
  if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
@@ -1035,6 +1112,24 @@ if(LIVE){
   var r=t.getBoundingClientRect(),sp=document.createElement("span");sp.className="ripple";
   sp.style.setProperty("--x",((e.clientX-r.left)/(r.width||1)*100)+"%");sp.style.setProperty("--y",((e.clientY-r.top)/(r.height||1)*100)+"%");
   t.appendChild(sp);sp.addEventListener("animationend",function(){sp.remove()});setTimeout(function(){if(sp.parentNode)sp.remove()},1000)},{passive:true})})();
+var BASE_TITLE=document.title;
+function unseen(l){return l.src==="เว็บไซต์"&&!l.ack}
+function renderBadge(){var n=D.l.filter(unseen),c=n.length,btn=document.querySelector('nav button[data-v="2"]');
+ if(btn){var b=btn.querySelector(".bdg");if(c){if(!b){b=document.createElement("span");b.className="bdg";btn.appendChild(b)}b.textContent=c>9?"9+":String(c)}else if(b)b.remove()}
+ var bn=$("newbn");if(bn){if(c){bn.style.display="flex";$("newbt").textContent="มีลูกค้าใหม่จากเว็บไซต์ "+c+" ราย";$("newbs").textContent=n.slice(0,3).map(function(l){return l.n}).join(", ")+(c>3?" และอีก "+(c-3)+" ราย":"")}else bn.style.display="none"}
+ document.title=(c?"("+c+") ":"")+BASE_TITLE}
+function inqDone(n,ph){var c=$("icard");$("isuct").textContent="ขอบคุณคุณ"+n+" เราได้รับข้อมูลของคุณแล้ว และจะติดต่อกลับที่เบอร์ "+ph+" โดยเร็วที่สุด";$("iok").textContent="";c.classList.add("sent");try{c.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}}
+$("iagain").onclick=function(){$("icard").classList.remove("sent");$("iname").focus()};
+function beep(){try{var C=window.AudioContext||window.webkitAudioContext,a=new C(),t=a.currentTime;[880,1175].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.18);g.gain.exponentialRampToValueAtTime(.25,t+i*.18+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.18+.16);o.connect(g);g.connect(a.destination);o.start(t+i*.18);o.stop(t+i*.18+.18)});setTimeout(function(){a.close()},900)}catch(e){}}
+var _tbT=null;
+function alertNew(ls){var c=ls.length,nm=ls.slice(0,3).map(function(l){return l.n}).join(", ")+(c>3?" และอีก "+(c-3)+" ราย":""),f=ls[0]||{};
+ $("tbt").textContent="มีลูกค้าฝากข้อมูลใหม่ "+c+" ราย";$("tbs").textContent=nm+(f.req?" - "+f.req:"")+(f.ph&&c===1?" โทร "+f.ph:"");
+ $("topbn").classList.add("on");clearTimeout(_tbT);_tbT=setTimeout(function(){$("topbn").classList.remove("on")},15000);
+ beep();if(navigator.vibrate)navigator.vibrate([200,80,200,80,200]);
+ try{if(window.Notification&&Notification.permission==="granted"&&document.visibilityState!=="visible")new Notification("CRM Agent Flow: ลูกค้าใหม่ "+c+" ราย",{body:nm})}catch(e){}}
+$("tbgo").onclick=function(){$("topbn").classList.remove("on");show(2)};
+$("tbx").onclick=function(){$("topbn").classList.remove("on")};
+$("newack").onclick=function(){$("topbn").classList.remove("on");D.l.forEach(function(l){if(unseen(l))l.ack=true});save();all()};
 all();
 </script>
 </body>
