@@ -759,7 +759,7 @@ body.nr #hl,body.nr .hr,body.nr #pside .rpic,body.nr #pside .rname,body.nr #psid
   <div class="card form">
    <label class="mute">อีเมลที่รับแจ้งเตือนลูกค้าใหม่</label><input id="nem" type="email" placeholder="อีเมล">
    <label class="mute">ลิงก์เว็บของคุณ (ใส่ในอีเมลแจ้งเตือน เช่น https://ชื่อ.vercel.app)</label><input id="cus" type="url" placeholder="https://...">
-   <button class="btn" id="sset">บันทึกการตั้งค่า</button><button class="ghost" id="smail" type="button" style="margin-top:10px;width:100%;padding:11px">ส่งอีเมลทดสอบ</button><div class="mute" id="mres" style="margin-top:8px"></div><button class="ghost" id="logout2" style="margin-top:10px;width:100%;padding:11px">ออกจากระบบ</button><div class="mute" id="adm" style="margin-top:8px"></div><div class="mute" id="mst" style="margin-top:6px"></div></div></div>
+   <button class="btn" id="sset">บันทึกการตั้งค่า</button><button class="ghost" id="logout2" style="margin-top:10px;width:100%;padding:11px">ออกจากระบบ</button><div class="mute" id="adm" style="margin-top:8px"></div><div class="mute" id="mst" style="margin-top:6px"></div></div></div>
   <h2>สำรองข้อมูล</h2>
   <div class="card form"><button class="btn" id="bk">ดาวน์โหลดไฟล์สำรอง</button><label class="mute" style="display:block;margin-top:12px">กู้คืนจากไฟล์สำรอง</label><input id="rs" type="file" accept=".json"><div class="mute" id="bkm"></div></div>
 </section>
@@ -1094,7 +1094,6 @@ function cfStart(){if(timersOn)return;timersOn=true;
  var u0=D.l.filter(unseen);if(u0.length)setTimeout(function(){alertNew(u0)},600);
  $("adminbox").style.display="block";
  api("getSettings",{},true).then(function(r){$("nem").value=r.notifyEmail||"";$("cus").value=r.siteUrl||"";var bad=/^(ส่งไม่สำเร็จ|ไม่ได้ส่ง)/.test(r.lastMail||"");$("mst").textContent=!r.notifyEmail?"ยังไม่ได้ตั้งอีเมลรับแจ้งเตือน (ระบบจะส่งไปที่อีเมลเจ้าของเว็บแทน) กรอกอีเมลแล้วกดบันทึกการตั้งค่า":(r.lastMail?("อีเมลแจ้งเตือนล่าสุด: "+r.lastMail):"ยังไม่มีลูกค้าส่งข้อมูลเข้ามา");$("mst").style.color=bad?"#C62828":"";if(bad)setTimeout(function(){setSt("อีเมลแจ้งเตือนยังส่งไม่ได้ ดูที่โปรไฟล์ > การตั้งค่าระบบ")},1500)}).catch(function(){});
- $("smail").onclick=function(){var m=$("mres");m.style.color="";m.textContent="กำลังส่งอีเมลทดสอบ...";api("testMail",{},true).then(function(r){m.style.color="#2E7D32";m.textContent="ส่งอีเมลทดสอบไปที่ "+r.to+" แล้ว กรุณาตรวจกล่องจดหมายและโฟลเดอร์สแปม"+(r.quota!=null?" (โควตาส่งวันนี้เหลือ "+r.quota+" ฉบับ)":"")}).catch(function(e){if(e&&e.code==="AUTH"){expired();return}m.style.color="#C62828";m.textContent=(e&&e.message)||"ส่งไม่สำเร็จ"})};
  $("sset").onclick=function(){$("adm").textContent="กำลังบันทึก...";api("saveSettings",{data:{notifyEmail:$("nem").value.trim(),siteUrl:$("cus").value.trim()}},true).then(function(){$("adm").textContent="บันทึกการตั้งค่าแล้ว"}).catch(function(e){if(e&&e.code==="AUTH"){expired();return}$("adm").textContent=(e&&e.message)||"บันทึกไม่สำเร็จ"})}}
 function cfLogout(){TOKEN=null;try{sessionStorage.removeItem("cf_tok")}catch(e){}if(window.google&&google.accounts&&google.accounts.id)google.accounts.id.disableAutoSelect();location.reload()}
 if(LIVE){
