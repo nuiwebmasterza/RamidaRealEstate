@@ -703,7 +703,7 @@ body.nr #hl,body.nr .hr,body.nr #pside .rpic,body.nr #pside .rname,body.nr #psid
     <input id="pm" placeholder="จุดเด่น / หมายเหตุ">
     <div class="two"><select id="ps"><option>ขาย</option><option>เช่า</option><option>จองแล้ว</option><option>ปิดการขาย</option></select><input id="pmap" placeholder="ลิงก์ Google Maps"></div>
     <input id="plk" placeholder="ลิงก์วิดีโอ/เอกสาร (YouTube, Drive)">
-    <label class="mute">รูปทรัพย์ (เลือกได้สูงสุด 4 รูป)</label><input id="pi" type="file" accept="image/*" multiple>
+    <label class="mute">รูปทรัพย์ (ทรัพย์ละไม่เกิน 10 รูป เลือกได้หลายรูปพร้อมกัน)</label><input id="pi" type="file" accept="image/*" multiple>
     <button class="btn" id="padd">บันทึกทรัพย์</button>
   </div></details>
   <h2>ทรัพย์ทั้งหมด</h2><div class="list" id="plist"></div>
@@ -799,7 +799,8 @@ function api(action,args,auth){var b=Object.assign({action:action},args||{});if(
 var saveT=null,saving=false,dirty=false;
 function setSt(t){var e=document.getElementById("svst");if(!e)return;e.textContent=t;e.classList.add("on");clearTimeout(setSt.t);setSt.t=setTimeout(function(){e.classList.remove("on")},2600)}
 function flush(){if(saving){saveT=setTimeout(flush,400);return}saving=true;dirty=false;
- api("saveData",{json:JSON.stringify(D),rev:REV},true).then(function(r){saving=false;if(r&&r.conflict){setSt("ข้อมูลถูกอัปเดตจากที่อื่น กำลังโหลดใหม่");setTimeout(function(){location.reload()},1300);return}REV=r.rev;if(dirty){flush();return}setSt("บันทึกแล้ว")})
+ var js=JSON.stringify(D);if(js.length>7800000){saving=false;setSt("ข้อมูลรวมใหญ่เกินไป (ส่วนใหญ่มาจากรูป) กรุณาลดจำนวนรูปหรือลบทรัพย์ที่ไม่ใช้แล้ว");return}
+ api("saveData",{json:js,rev:REV},true).then(function(r){saving=false;if(r&&r.conflict){setSt("ข้อมูลถูกอัปเดตจากที่อื่น กำลังโหลดใหม่");setTimeout(function(){location.reload()},1300);return}REV=r.rev;if(dirty){flush();return}setSt("บันทึกแล้ว")})
  .catch(function(e){saving=false;dirty=true;if(e&&e.code==="AUTH"){expired();return}setSt("บันทึกไม่สำเร็จ จะลองใหม่");saveT=setTimeout(flush,5000)})}
 function load(){if(LIVE)return {p:[],l:[],me:{n:"",g:"",c:"",x:"",ph:"",li:"",rv:[]}};
  try{var s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}
@@ -901,9 +902,9 @@ $("gen").onclick=function(){gen($("gp").value)};
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var w=Math.min(480,im.width),c=document.createElement("canvas");c.width=w;c.height=im.height*w/im.width;c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.55))};im.src=r.result};r.readAsDataURL(f)}
 var EP=null;
 $("padd").onclick=function(){var n=$("pn").value.trim();if(!n){$("pn").focus();return}
- var old=EP?D.p.find(function(x){return x.id==EP}):null,fs=[].slice.call($("pi").files).slice(0,4);
+ var old=EP?D.p.find(function(x){return x.id==EP}):null,fs=[].slice.call($("pi").files),MAXI=10,have=old?(old.imgs||(old.img?[old.img]:[])).length:0;if(have+fs.length>MAXI){setSt("รูปเกิน "+MAXI+" รูปต่อทรัพย์ ระบบเก็บให้เฉพาะ "+MAXI+" รูปแรก")}fs=fs.slice(0,Math.max(0,MAXI-have));
  var o={id:old?old.id:Date.now(),n:n,t:$("pt").value,b:+$("pb").value||0,a:+$("pa").value||0,pr:+$("pp").value||0,m:$("pm").value.trim(),st:$("ps").value,map:$("pmap").value.trim(),link:$("plk").value.trim(),imgs:old?(old.imgs||(old.img?[old.img]:[])).slice():[],c:old?old.c:TODAY};
- function done(){o.imgs=o.imgs.slice(0,4);o.img=o.imgs[0]||null;if(old)D.p[D.p.indexOf(old)]=o;else D.p.unshift(o);EP=null;$("padd").textContent="บันทึกทรัพย์";["pn","pp","pb","pa","pm","pmap","plk","pi"].forEach(function(i){$(i).value=""});$("ps").value="ขาย";save();all()}
+ function done(){o.imgs=o.imgs.slice(0,MAXI);o.img=o.imgs[0]||null;if(old)D.p[D.p.indexOf(old)]=o;else D.p.unshift(o);EP=null;$("padd").textContent="บันทึกทรัพย์";["pn","pp","pb","pa","pm","pmap","plk","pi"].forEach(function(i){$(i).value=""});$("ps").value="ขาย";save();all()}
  var i=0;(function nx(){if(i>=fs.length)return done();shrink(fs[i++],function(u){o.imgs.push(u);nx()})})()};
 var EL=null;
 $("ladd").onclick=function(){var n=$("ln").value.trim();if(!n){$("ln").focus();return}
